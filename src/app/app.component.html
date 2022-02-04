@@ -1,0 +1,75 @@
+<body>
+  <h1>Create New ORTF Request:</h1>
+  <mat-divider></mat-divider>
+
+  <form [formGroup]="clientForm" (ngSubmit)="addRequest($event)">
+    <mat-form-field appearance="fill">
+      <mat-label>Client</mat-label>
+      <select formControlName="ortfClient" matNativeControl required>
+        <option value="">Select Client</option>
+        <option *ngFor="let client of clients" [value]="client.id">
+          {{ client.name }}
+        </option>
+      </select>
+    </mat-form-field>
+
+    <mat-divider></mat-divider>
+    <mat-radio-group formControlName="ortfDirection" required>
+      <mat-radio-button value="1">Incoming</mat-radio-button>
+      <mat-radio-button value="2">Outgoing</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-divider></mat-divider>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>                                                                                         
+
+    <mat-radio-group formControlName="ortfFileType" required>
+      <mat-radio-button value="1">Test</mat-radio-button>
+      <mat-radio-button value="2">Production</mat-radio-button>
+      <mat-radio-button value="3">Lag</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-toolbar>
+      <button
+        type="button"
+        mat-flat-button
+        color="primary"
+        (click)="fileInput.click()"
+      >
+        Browse File
+      </button>
+    </mat-toolbar>
+
+    <!-- Fetch selected filed on change -->
+    <input
+      formControlName="ortfFile"
+      hidden
+      type="file"
+      #fileInput
+      id="uploadFile"
+      (change)="uploadFileEvt($event)"
+      name="uploadFile"
+      multiple
+      accept="image/*"
+    />
+
+    <mat-divider></mat-divider>
+    <button
+      [disabled]="clientForm.invalid"
+      type="submit"
+      mat-raised-button
+      color="primary"
+    >
+      Create
+    </button>
+  </form>
+  <h1>Existing ORTF Requests:</h1>
+  <table mat-table>
+    ...
+  </table>
+</body>
