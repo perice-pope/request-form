@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { OrtfRequest } from './shared/services/ortf/ortf.model';
+import { OrftDirection, OrtfFileType, OrtfRequest } from './shared/services/ortf/ortf.model';
 import { OrtfService } from './shared/services/ortf/ortf.service';
 
 @Component({
@@ -81,5 +81,26 @@ export class AppComponent implements OnInit {
     } else {
       this.fileAttr = 'Choose File';
     }
+  }
+
+  handleCreate() {
+
+    let request: OrtfRequest = {
+      clientName: "Bharath",
+      direction: OrftDirection.Incoming,
+      implementationDate: new Date(),
+      file: {
+        filename: "SampleFile.dat",
+        data: "sdf",
+        type: OrtfFileType.Lag
+      },
+      status: "In Step 3"
+    }
+
+    this.orftService.createRequest(request)
+      .subscribe(result => {
+        // For now just console.log the result
+        console.log(result);
+      })
   }
 }

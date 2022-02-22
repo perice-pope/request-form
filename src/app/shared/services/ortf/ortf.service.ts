@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { OrftDirection, OrtfFileType, OrtfRequest } from './ortf.model';
 
 @Injectable({
@@ -33,9 +35,15 @@ export class OrtfService {
     }
   ]
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   retrieveExistingRequests(): Observable<OrtfRequest[]> {
     return of(this.mockData);
+  }
+
+  createRequest(request: OrtfRequest): Observable<any> {
+    return this.http.get(environment.ortfApiUrl, { params: { body: JSON.stringify(request) } });
   }
 }
