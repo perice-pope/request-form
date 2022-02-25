@@ -18,3 +18,11 @@
 `aws s3 cp dist/ortf-home s3://ortf-request-form --recursive`
 // with profile:
 `aws s3 cp dist/ortf-home s3://ortf-request-form --recursive --profile ortf`
+
+# AWS
+
+## S3
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html#step1-create-bucket-config-as-website
+
+## Cloudfront
+- https://aws.amazon.com/premiumsupport/knowledge-center/cloudfront-serve-static-website/
