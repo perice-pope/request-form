@@ -1,10 +1,12 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { OrtfRequest } from './shared/services/ortf/ortf.model';
+import { OrtfService } from './shared/services/ortf/ortf.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   title = 'ORTF-UI';
@@ -12,18 +14,26 @@ export class AppComponent implements OnInit {
   selectedClient: number;
 
   clients = [
-      { id: 1, name: 'Client 1' },
-      { id: 2, name: 'Client 2' },
-      { id: 3, name: 'Client 3' },
-      { id: 4, name: 'Client 4' },
+    { id: 1, name: 'Client 1' },
+    { id: 2, name: 'Client 2' },
+    { id: 3, name: 'Client 3' },
+    { id: 4, name: 'Client 4' },
   ];
 
   @ViewChild('fileInput') fileInput: ElementRef;
   fileAttr = 'Choose File';
   clientForm!: FormGroup
 
+  existingRequests: OrtfRequest[];
+
+  displayedColumns: string[] = ['clientName', 'name', 'filename', 'type', 'status', 'lastModUser', 'lastModDate', 'open'];
+
+  constructor(
+    private orftService: OrtfService
+  ) { }
+
   ngOnInit() {
-    this.clientForm  = new FormGroup({
+    this.clientForm = new FormGroup({
       ortfClient: new FormControl('', [
         Validators.required,
       ]),
@@ -36,7 +46,10 @@ export class AppComponent implements OnInit {
       ortfFile: new FormControl('', [
         Validators.required,
       ]),
-    })
+    });
+
+    this.orftService.retrieveExistingRequests()
+      .subscribe(results => this.existingRequests = results);
   }
 
   addRequest(event: Event) {
@@ -62,7 +75,7 @@ export class AppComponent implements OnInit {
         };
       };
       reader.readAsDataURL(files[0]);
-      
+
       // Reset if duplicate image uploaded again
       this.fileInput.nativeElement.value = "";
     } else {
