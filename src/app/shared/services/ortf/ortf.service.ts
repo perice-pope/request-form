@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { OrftDirection, OrtfFileType, OrtfRequest } from './ortf.model';
+import { OrtfDirection, OrtfFileType, OrtfRequest } from './ortf.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +10,8 @@ export class OrtfService {
   mockData: OrtfRequest[] = [
     {
       clientName: "Acme Corp",
-      direction: OrftDirection.Incoming,
-      implementationDate: new Date(),
+      ortfDirection: OrtfDirection.Incoming,
+      implementationDate: new Date().toISOString().slice(0, 10),
       file: {
         filename: "File_1.dat",
         data: "",
@@ -22,8 +22,8 @@ export class OrtfService {
 
     {
       clientName: "ABC Health Plan",
-      direction: OrftDirection.Incoming,
-      implementationDate: new Date(),
+      ortfDirection: OrtfDirection.Incoming,
+      implementationDate: new Date().toISOString().slice(0, 10),
       file: {
         filename: "SampleFile.dat",
         data: "",

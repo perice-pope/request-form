@@ -6,15 +6,15 @@
 
     <mat-grid-tile colspan="3" class="pp-form">
       <form [formGroup]="clientForm" (ngSubmit)="addRequest($event)">
-        <mat-form-field appearance="fill">
+        <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>Select Client</mat-label>
-          <select formControlName="ortfClient" matNativeControl required>
-            <option value="">Select Client</option>
-            <option *ngFor="let client of clients" [value]="client.id">
-              {{ client.name }}
-            </option>
-          </select>
-        </mat-form-field>
+          <input type="text" matInput formControlName="clientName" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let client of filteredOptions | async" [value]="client.name">
+              {{client.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>        
 
         <mat-divider></mat-divider>
 
@@ -22,15 +22,15 @@
           <label id="ortf-direction-radio-group-label">ORTF Direction</label>
         </div>
         <mat-radio-group formControlName="ortfDirection" required aria-labelledby="ortf-direction-radio-group-label" class="pp-direction">
-          <mat-radio-button value="1">Incoming</mat-radio-button>
-          <mat-radio-button value="2">Outgoing</mat-radio-button>
+          <mat-radio-button value="Incoming">Incoming</mat-radio-button>
+          <mat-radio-button value="Outgoing">Outgoing</mat-radio-button>
         </mat-radio-group>
 
         <mat-divider></mat-divider>
 
         <mat-form-field appearance="fill">
           <mat-label>Implementation Date</mat-label>
-          <input matInput [matDatepicker]="picker" />
+          <input matInput formControlName="implementationDate" [matDatepicker]="picker" />
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>    
@@ -67,12 +67,14 @@
         <mat-divider></mat-divider>                                                                          
 
         <mat-radio-group formControlName="ortfFileType" required>
-          <mat-radio-button value="1">Test</mat-radio-button>
-          <mat-radio-button value="2">Production</mat-radio-button>
-          <mat-radio-button value="3">Lag</mat-radio-button>
+          <mat-radio-button value="Test">Test</mat-radio-button>
+          <mat-radio-button value="Production">Production</mat-radio-button>
+          <mat-radio-button value="Lag">Lag</mat-radio-button>
         </mat-radio-group>
 
         <mat-divider></mat-divider>
+
+
         
         <button
           [disabled]="clientForm.invalid"
@@ -86,6 +88,15 @@
     </mat-grid-tile>
     <mat-grid-tile colspan="4" class="pp-table">
       <h1>Existing ORTF Requests:</h1>
+
+      <div>
+        <label id="ortf-direction-radio-group-label">ORTF Status</label>
+      </div>
+      <mat-radio-group (change)="handleOrtfStatusFilter($event)">
+        <mat-radio-button value="Incomplete">Incomplete</mat-radio-button>
+        <mat-radio-button value="Complete">Complete</mat-radio-button>
+      </mat-radio-group>      
+
       <table mat-table [dataSource]="existingRequests"> 
         <!-- Client Name Column -->
         <ng-container matColumnDef="clientName">
@@ -96,8 +107,14 @@
         <!-- ORT Direction Column -->
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> ORT Direction </th>
-          <td mat-cell *matCellDef="let element"> {{element.direction}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.ortfDirection}} </td>
         </ng-container>
+
+        <!-- ORTF Implementation date Column -->
+        <ng-container matColumnDef="implementationDate">
+          <th mat-header-cell *matHeaderCellDef> Implementation Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.implementationDate}} </td>
+        </ng-container>        
 
         <!-- File Name Column -->
         <ng-container matColumnDef="filename">
@@ -131,9 +148,10 @@
 
         <!-- Open Button Column -->
         <ng-container matColumnDef="open">
-          <th mat-header-cell *matHeaderCellDef> Last Modified Date </th>
-          <td mat-cell *matCellDef="let element"> TODO </td>
+          <th mat-header-cell *matHeaderCellDef> Open File </th>
+          <td mat-cell *matCellDef="let element"> <button mat-raised-button color="primary">Open</button> </td>
         </ng-container>
+        
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

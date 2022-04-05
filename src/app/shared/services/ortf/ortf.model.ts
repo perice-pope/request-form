@@ -1,12 +1,12 @@
 export interface OrtfRequest {
     clientName: string;
-    direction: OrftDirection;
-    implementationDate: Date;
+    ortfDirection: OrtfDirection;
+    implementationDate: string;
     file: OrtfFile;
     status: string;
 }
 
-export enum OrftDirection {
+export enum OrtfDirection {
     Incoming = "Incoming",
     Outgoing = "Outgoing"
 }

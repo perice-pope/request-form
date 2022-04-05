@@ -19,6 +19,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatDatepickerModule,
     MatGridListModule,
     MatTableModule,
+    MatAutocompleteModule,
     CommonModule
   ],
   providers: [],
